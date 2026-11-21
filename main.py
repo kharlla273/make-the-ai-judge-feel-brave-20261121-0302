@@ -20,6 +20,10 @@ ENTRY = (
 
 
 def main() -> None:
+    # Guard the 1-280 code-point contract: fail loudly instead of writing
+    # an entry the judge would reject as too long or empty.
+    if not (1 <= len(ENTRY) <= 280) or not ENTRY.strip():
+        raise ValueError(f"ENTRY must be 1-280 non-blank characters, got {len(ENTRY)}")
     out_dir = os.environ.get("OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
